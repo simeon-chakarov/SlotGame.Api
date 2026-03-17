@@ -5,14 +5,9 @@ using SlotGame.Api.Entities;
 
 namespace SlotGame.Api.Services;
 
-public class GameService : IGameService
+public class GameService(AppDbContext dbContext) : IGameService
 {
-    private readonly AppDbContext _dbContext;
-
-    public GameService(AppDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly AppDbContext _dbContext = dbContext;
 
     public async Task<CreateGameResponse> CreateGameAsync(
         CreateGameRequest request,

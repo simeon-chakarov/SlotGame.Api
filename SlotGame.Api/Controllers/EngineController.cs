@@ -8,7 +8,7 @@ namespace SlotGame.Api.Controllers;
 
 [ApiController]
 [Route("api/engine")]
-public class EngineController(ISpinEngineService spinEngineService, IValidator<SpinRequest> spinRequestValidator) : ControllerBase
+public class EngineController(ISpinEngineService spinEngineService, IValidator<SpinRequest> spinRequestValidator) : ApiControllerBase
 {
     private readonly ISpinEngineService _spinEngineService = spinEngineService;
     private readonly IValidator<SpinRequest> _spinRequestValidator = spinRequestValidator;
@@ -17,6 +17,10 @@ public class EngineController(ISpinEngineService spinEngineService, IValidator<S
     public async Task<ActionResult<SpinResponse>> ExecuteSpin([FromBody] SpinRequest request, CancellationToken cancellationToken)
     {
         var validationResult = await _spinRequestValidator.ValidateAsync(request, cancellationToken);
+        if (ValidationProblemOrNull(validationResult) is ActionResult validationResponse)
+        {
+            return validationResponse;
+        }
 
         if (!validationResult.IsValid)
         {

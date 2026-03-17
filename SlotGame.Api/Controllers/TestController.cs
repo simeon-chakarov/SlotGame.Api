@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SlotGame.Api.Constants;
 using SlotGame.Api.Data;
 
 namespace SlotGame.Api.Controllers;
@@ -13,7 +14,7 @@ public class TestController(AppDbContext dbContext) : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
-        return Ok("API is working");
+        return Ok(SuccessMessages.ApiIsWorking);
     }
 
     [HttpDelete("reset")]
@@ -32,6 +33,6 @@ public class TestController(AppDbContext dbContext) : ControllerBase
         await _dbContext.ReelStrips.ExecuteDeleteAsync(cancellationToken);
         await _dbContext.Games.ExecuteDeleteAsync(cancellationToken);
 
-        return Ok(new { message = "Database cleared." });
+        return Ok(new { message = SuccessMessages.DatabaseCleared });
     }
 }

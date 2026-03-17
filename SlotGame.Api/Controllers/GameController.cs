@@ -7,7 +7,7 @@ namespace SlotGame.Api.Controllers;
 
 [ApiController]
 [Route("api")]
-public class GamesController(IGameService gameService, IValidator<CreateGameRequest> createGameRequestValidator) : ControllerBase
+public class GamesController(IGameService gameService, IValidator<CreateGameRequest> createGameRequestValidator) : ApiControllerBase
 {
     private readonly IGameService _gameService = gameService;
     private readonly IValidator<CreateGameRequest> _createGameRequestValidator = createGameRequestValidator;
@@ -16,18 +16,9 @@ public class GamesController(IGameService gameService, IValidator<CreateGameRequ
     public async Task<ActionResult<CreateGameResponse>> CreateGame([FromBody] CreateGameRequest request, CancellationToken cancellationToken)
     {
         var validationResult = await _createGameRequestValidator.ValidateAsync(request, cancellationToken);
-
-        if (!validationResult.IsValid)
+        if (ValidationProblemOrNull(validationResult) is ActionResult validationResponse)
         {
-            var errors = validationResult.Errors
-                .Select(x => new
-                {
-                    Field = x.PropertyName,
-                    Message = x.ErrorMessage
-                })
-                .ToList();
-
-            return BadRequest(new { Errors = errors });
+            return validationResponse;
         }
 
         var response = await _gameService.CreateGameAsync(request, cancellationToken);
