@@ -5,6 +5,9 @@ using SlotGame.Api.Services;
 
 namespace SlotGame.Api.Controllers;
 
+/// <summary>
+/// Provides paginated access to spin history. Route: <c>api/history</c>.
+/// </summary>
 [ApiController]
 [Route("api/history")]
 public class HistoryController(ISpinEngineService spinEngineService) : ControllerBase

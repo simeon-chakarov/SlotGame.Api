@@ -5,6 +5,9 @@ using SlotGame.Api.Services;
 
 namespace SlotGame.Api.Controllers;
 
+/// <summary>
+/// Handles game creation and retrieval. Route: <c>api/game</c>, <c>api/games</c>.
+/// </summary>
 [ApiController]
 [Route("api")]
 public class GamesController(IGameService gameService, IValidator<CreateGameRequest> createGameRequestValidator) : ApiControllerBase

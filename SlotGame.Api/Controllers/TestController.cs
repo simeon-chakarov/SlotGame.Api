@@ -5,6 +5,9 @@ using SlotGame.Api.Data;
 
 namespace SlotGame.Api.Controllers;
 
+/// <summary>
+/// Development-only utilities: health check and database reset. Route: <c>test</c>.
+/// </summary>
 [ApiController]
 [Route("[controller]")]
 public class TestController(AppDbContext dbContext) : ControllerBase

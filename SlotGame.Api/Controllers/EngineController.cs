@@ -6,6 +6,9 @@ using SlotGame.Api.Services;
 
 namespace SlotGame.Api.Controllers;
 
+/// <summary>
+/// Handles spin execution and spin retrieval. Route: <c>api/engine</c>.
+/// </summary>
 [ApiController]
 [Route("api/engine")]
 public class EngineController(ISpinEngineService spinEngineService, IValidator<SpinRequest> spinRequestValidator) : ApiControllerBase
