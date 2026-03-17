@@ -5,14 +5,15 @@ using SlotGame.Api.Entities;
 
 namespace SlotGame.Api.Services;
 
+/// <summary>
+/// Handles creation and retrieval of game configurations, including reel strip persistence.
+/// </summary>
 public class GameService(AppDbContext dbContext) : IGameService
 {
     private readonly AppDbContext _dbContext = dbContext;
 
     /// <inheritdoc/>
-    public async Task<CreateGameResponse> CreateGameAsync(
-        CreateGameRequest request,
-        CancellationToken cancellationToken = default)
+    public async Task<CreateGameResponse> CreateGameAsync(CreateGameRequest request, CancellationToken cancellationToken = default)
     {
         var game = new Game
         {

@@ -8,6 +8,10 @@ using SlotGame.Api.Services.Models;
 
 namespace SlotGame.Api.Services;
 
+/// <summary>
+/// Implements the core tumbling slot engine: matrix generation, win evaluation,
+/// cascade processing, and spin persistence.
+/// </summary>
 public class SpinEngineService(AppDbContext dbContext) : ISpinEngineService
 {
     private const int MatrixSize = 8;
