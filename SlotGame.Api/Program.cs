@@ -5,7 +5,6 @@ using SlotGame.Api.Data;
 using SlotGame.Api.Infrastructure;
 using SlotGame.Api.Services;
 using SlotGame.Api.Validators;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
