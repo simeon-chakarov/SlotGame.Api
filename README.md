@@ -52,7 +52,7 @@ The database will be created automatically on startup via EF Core migrations.
 ## API Endpoints
 
 ### Games
-- `POST /api/games` – Create a new game
+- `POST /api/game` – Create a new game
 - `GET /api/games` – Get all games
 - `GET /api/games/{id}` – Get game by id
 
