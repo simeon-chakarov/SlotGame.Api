@@ -16,6 +16,7 @@ public class SpinEngineService(AppDbContext dbContext) : ISpinEngineService
     private readonly AppDbContext _dbContext = dbContext;
     private readonly Random _random = new();
 
+    /// <inheritdoc/>
     public async Task<SpinResponse?> ExecuteSpinAsync(SpinRequest request, CancellationToken cancellationToken = default)
     {
         var game = await _dbContext.Games
@@ -104,6 +105,7 @@ public class SpinEngineService(AppDbContext dbContext) : ISpinEngineService
         };
     }
 
+    /// <inheritdoc/>
     public async Task<GetSpinResponse?> GetSpinByIdAsync(int spinId, CancellationToken cancellationToken = default)
     {
         var spin = await _dbContext.Spins
@@ -126,6 +128,7 @@ public class SpinEngineService(AppDbContext dbContext) : ISpinEngineService
         };
     }
 
+    /// <inheritdoc/>
     public async Task<List<HistoryItemResponse>> GetHistoryAsync(int spinsPerPage, int pageNumber, CancellationToken cancellationToken = default)
     {
         var skip = (pageNumber - 1) * spinsPerPage;

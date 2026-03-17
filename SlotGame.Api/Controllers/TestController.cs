@@ -11,12 +11,17 @@ public class TestController(AppDbContext dbContext) : ControllerBase
 {
     private readonly AppDbContext _dbContext = dbContext;
 
+    /// <summary>Health check endpoint.</summary>
     [HttpGet]
     public IActionResult Get()
     {
         return Ok(SuccessMessages.ApiIsWorking);
     }
 
+    /// <summary>
+    /// Clears all data from the database. Only available in the Development environment.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
     [HttpDelete("reset")]
     public async Task<IActionResult> ResetDatabase(CancellationToken cancellationToken)
     {

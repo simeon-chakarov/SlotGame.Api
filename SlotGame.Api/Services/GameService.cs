@@ -9,6 +9,7 @@ public class GameService(AppDbContext dbContext) : IGameService
 {
     private readonly AppDbContext _dbContext = dbContext;
 
+    /// <inheritdoc/>
     public async Task<CreateGameResponse> CreateGameAsync(
         CreateGameRequest request,
         CancellationToken cancellationToken = default)
@@ -49,6 +50,7 @@ public class GameService(AppDbContext dbContext) : IGameService
         };
     }
 
+    /// <inheritdoc/>
     public async Task<List<GameListItemResponse>> GetGamesAsync(CancellationToken cancellationToken = default)
     {
         return await _dbContext.Games
@@ -62,6 +64,7 @@ public class GameService(AppDbContext dbContext) : IGameService
             .ToListAsync(cancellationToken);
     }
 
+    /// <inheritdoc/>
     public async Task<GameListItemResponse?> GetGameByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Games

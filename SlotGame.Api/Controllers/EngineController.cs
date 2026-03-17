@@ -13,6 +13,13 @@ public class EngineController(ISpinEngineService spinEngineService, IValidator<S
     private readonly ISpinEngineService _spinEngineService = spinEngineService;
     private readonly IValidator<SpinRequest> _spinRequestValidator = spinRequestValidator;
 
+    /// <summary>
+    /// Executes a spin for the specified game: generates an 8×8 matrix, evaluates wins,
+    /// runs up to 10 cascade (tumbling) steps, and persists the final result.
+    /// </summary>
+    /// <param name="request">The game ID and bet amount for this spin.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>All matrix states (initial + each cascade) and the combined total win.</returns>
     [HttpPost]
     public async Task<ActionResult<SpinResponse>> ExecuteSpin([FromBody] SpinRequest request, CancellationToken cancellationToken)
     {
@@ -32,6 +39,12 @@ public class EngineController(ISpinEngineService spinEngineService, IValidator<S
         return Ok(response);
     }
 
+    /// <summary>
+    /// Retrieves a previously executed spin by its ID.
+    /// </summary>
+    /// <param name="spinId">The spin identifier.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The saved spin details including its final matrix state and total win.</returns>
     [HttpGet]
     public async Task<ActionResult<GetSpinResponse>> GetSpin([FromQuery] int spinId, CancellationToken cancellationToken)
     {
