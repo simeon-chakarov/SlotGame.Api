@@ -1,6 +1,67 @@
 @SlotGame.Api_HostAddress = http://localhost:5057
 
-GET {{SlotGame.Api_HostAddress}}/weatherforecast/
+### Create a game
+POST {{SlotGame.Api_HostAddress}}/api/game
+Content-Type: application/json
+
+{
+  "name": "Demo Game",
+  "symbolsPerReel": [
+    [1, 2, 3, 4, 5, 6, 7, 8],
+    [0],
+    [20, 2, 2, 5, 7, 32, 32, 111, 11, 255, 0],
+    [10, 11, 12, 13, 14, 15, 16, 17, 2, 2, 2, 2, 2, 2, 2, 2],
+    [2, 2, 3, 4, 5, 6],
+    [255, 254, 253, 252, 2],
+    [1, 1, 2, 2, 2],
+    [0, 255, 50, 100]
+  ]
+}
+
+###
+
+### List all games
+GET {{SlotGame.Api_HostAddress}}/api/games
 Accept: application/json
+
+###
+
+### Get game by ID
+GET {{SlotGame.Api_HostAddress}}/api/games/1
+Accept: application/json
+
+###
+
+### Execute a spin
+POST {{SlotGame.Api_HostAddress}}/api/engine
+Content-Type: application/json
+
+{
+  "gameId": 1,
+  "betAmount": 2.5
+}
+
+###
+
+### Get spin by ID
+GET {{SlotGame.Api_HostAddress}}/api/engine?spinId=1
+Accept: application/json
+
+###
+
+### Get spin history (page 1)
+GET {{SlotGame.Api_HostAddress}}/api/history?spinsPerPage=10&pageNumber=1
+Accept: application/json
+
+###
+
+### Health check
+GET {{SlotGame.Api_HostAddress}}/test
+Accept: application/json
+
+###
+
+### Reset database (development only)
+DELETE {{SlotGame.Api_HostAddress}}/test/reset
 
 ###
