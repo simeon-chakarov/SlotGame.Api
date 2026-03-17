@@ -107,6 +107,7 @@ public class SpinEngineService(AppDbContext dbContext, IRandomProvider randomPro
             GameId = request.GameId,
             BetAmount = request.BetAmount,
             TotalWin = totalWin,
+            CreatedAtUtc = spin.CreatedAtUtc,
             States = states
         };
     }

@@ -10,5 +10,7 @@ public class SpinResponse
 
     public decimal TotalWin { get; set; }
 
+    public DateTime CreatedAtUtc { get; set; }
+
     public List<SpinStateResponse> States { get; set; } = [];
 }
