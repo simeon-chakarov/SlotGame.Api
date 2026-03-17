@@ -20,13 +20,14 @@ public class HistoryController(ISpinEngineService spinEngineService) : Controlle
     
 
     /// <summary>
-    /// Returns a paginated list of all spins, ordered by ID ascending.
+    /// Returns a paginated list of all spins ordered by ID ascending,
+    /// including total count and page metadata.
     /// </summary>
     /// <param name="spinsPerPage">Number of results per page (default 10, max 100).</param>
     /// <param name="pageNumber">1-based page number (default 1).</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     [HttpGet]
-    public async Task<ActionResult<List<HistoryItemResponse>>> GetHistory(
+    public async Task<ActionResult<HistoryResponse>> GetHistory(
         [FromQuery] int spinsPerPage = DefaultSpinsPerPage,
         [FromQuery] int pageNumber = DefaultPageNumber,
         CancellationToken cancellationToken = default)

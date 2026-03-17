@@ -133,27 +133,38 @@ public class SpinEngineService(AppDbContext dbContext, IRandomProvider randomPro
     }
 
     /// <inheritdoc/>
-    public async Task<List<HistoryItemResponse>> GetHistoryAsync(int spinsPerPage, int pageNumber, CancellationToken cancellationToken = default)
+    public async Task<HistoryResponse> GetHistoryAsync(int spinsPerPage, int pageNumber, CancellationToken cancellationToken = default)
     {
         var skip = (pageNumber - 1) * spinsPerPage;
 
-        var spins = await _dbContext.Spins
-            .AsNoTracking()
+        var query = _dbContext.Spins.AsNoTracking();
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var spins = await query
             .OrderBy(x => x.Id)
             .Skip(skip)
             .Take(spinsPerPage)
             .ToListAsync(cancellationToken);
 
-        return [.. spins
-            .Select(x => new HistoryItemResponse
-            {
-                SpinId = x.Id,
-                GameId = x.GameId,
-                BetAmount = x.BetAmount,
-                TotalWin = x.TotalWin,
-                CreatedAtUtc = x.CreatedAtUtc,
-                FinalMatrix = MatrixSerializer.Deserialize(x.FinalMatrixJson)
-            })];
+        var items = spins.Select(x => new HistoryItemResponse
+        {
+            SpinId = x.Id,
+            GameId = x.GameId,
+            BetAmount = x.BetAmount,
+            TotalWin = x.TotalWin,
+            CreatedAtUtc = x.CreatedAtUtc,
+            FinalMatrix = MatrixSerializer.Deserialize(x.FinalMatrixJson)
+        }).ToList();
+
+        return new HistoryResponse
+        {
+            Items = items,
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            SpinsPerPage = spinsPerPage,
+            TotalPages = (int)Math.Ceiling(totalCount / (double)spinsPerPage)
+        };
     }
 
     private InitialMatrixResult GenerateInitialMatrix(List<List<int>> reelValues)
