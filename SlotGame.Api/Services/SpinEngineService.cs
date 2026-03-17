@@ -12,13 +12,13 @@ namespace SlotGame.Api.Services;
 /// Implements the core tumbling slot engine: matrix generation, win evaluation,
 /// cascade processing, and spin persistence.
 /// </summary>
-public class SpinEngineService(AppDbContext dbContext) : ISpinEngineService
+public class SpinEngineService(AppDbContext dbContext, IRandomProvider randomProvider) : ISpinEngineService
 {
     private const int MatrixSize = 8;
     private const int MaxCascades = 10;
 
     private readonly AppDbContext _dbContext = dbContext;
-    private readonly Random _random = new();
+    private readonly IRandomProvider _random = randomProvider;
 
     /// <inheritdoc/>
     public async Task<SpinResponse?> ExecuteSpinAsync(SpinRequest request, CancellationToken cancellationToken = default)

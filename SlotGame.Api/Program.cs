@@ -17,6 +17,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
     ?? throw new InvalidOperationException(ErrorMessages.ConnectionStringNotFound);
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString));
+builder.Services.AddSingleton<IRandomProvider, RandomProvider>();
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<ISpinEngineService, SpinEngineService>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateGameRequestValidator>();
