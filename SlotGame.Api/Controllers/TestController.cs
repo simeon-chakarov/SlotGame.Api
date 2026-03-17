@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SlotGame.Api.Constants;
 using SlotGame.Api.Data;
+using SlotGame.Api.Infrastructure;
 
 namespace SlotGame.Api.Controllers;
 
@@ -22,19 +23,14 @@ public class TestController(AppDbContext dbContext) : ControllerBase
     }
 
     /// <summary>
-    /// Clears all data from the database. Only available in the Development environment.
+    /// Clears all data from the database.
+    /// Only reachable in Development — <see cref="DevOnlyControllerConvention"/> removes
+    /// this controller entirely in all other environments.
     /// </summary>
     /// <param name="cancellationToken">Cancellation token.</param>
     [HttpDelete("reset")]
     public async Task<IActionResult> ResetDatabase(CancellationToken cancellationToken)
     {
-        if (!HttpContext.RequestServices
-            .GetRequiredService<IWebHostEnvironment>()
-            .IsDevelopment())
-        {
-            return NotFound();
-        }
-
         // Order matters (FK constraints)
         await _dbContext.Spins.ExecuteDeleteAsync(cancellationToken);
         await _dbContext.ReelSymbols.ExecuteDeleteAsync(cancellationToken);
