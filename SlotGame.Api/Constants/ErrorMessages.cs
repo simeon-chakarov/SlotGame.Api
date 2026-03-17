@@ -16,6 +16,7 @@ public static class ErrorMessages
     public const string BetAmountMustBeGreaterThanZero = "BetAmount must be greater than 0.";
     public const string GameNotFound = "Game not found.";
     public const string SpinNotFound = "Spin not found.";
+    public const string SpinIdMustBeGreaterThanZero = "spinId must be greater than 0.";
 
     public const string SpinPerPageMustBeGreaterThanZero = "spinsPerPage must be greater than 0.";
     public const string PageNumberMustBeGreaterThanZero = "pageNumber must be greater than 0.";

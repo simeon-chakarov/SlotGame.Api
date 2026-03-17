@@ -22,46 +22,29 @@ public class EngineController(ISpinEngineService spinEngineService, IValidator<S
             return validationResponse;
         }
 
-        if (!validationResult.IsValid)
-        {
-            var errors = validationResult.Errors
-                .Select(x => new
-                {
-                    Field = x.PropertyName,
-                    Message = x.ErrorMessage
-                })
-                .ToList();
-
-            return BadRequest(new 
-            { 
-                Errors = errors 
-            });
-        }
-
         var response = await _spinEngineService.ExecuteSpinAsync(request, cancellationToken);
 
         if (response is null)
         {
-            return NotFound(new
-            {
-                error = ErrorMessages.GameNotFound
-            });
+            return NotFound(new { error = ErrorMessages.GameNotFound });
         }
 
         return Ok(response);
     }
 
-    [HttpGet("{spinId:int}")]
-    public async Task<ActionResult<GetSpinResponse>> GetSpin(int spinId, CancellationToken cancellationToken)
+    [HttpGet]
+    public async Task<ActionResult<GetSpinResponse>> GetSpin([FromQuery] int spinId, CancellationToken cancellationToken)
     {
+        if (spinId <= 0)
+        {
+            return BadRequest(new { message = ErrorMessages.SpinIdMustBeGreaterThanZero });
+        }
+
         var response = await _spinEngineService.GetSpinByIdAsync(spinId, cancellationToken);
 
         if (response is null)
         {
-            return NotFound(new
-            {
-                error = ErrorMessages.SpinNotFound
-            });
+            return NotFound(new { error = ErrorMessages.SpinNotFound });
         }
 
         return Ok(response);
