@@ -104,6 +104,8 @@ public class SpinEngineService(AppDbContext dbContext, IRandomProvider randomPro
         return new SpinResponse
         {
             SpinId = spin.Id,
+            GameId = request.GameId,
+            BetAmount = request.BetAmount,
             TotalWin = totalWin,
             States = states
         };
