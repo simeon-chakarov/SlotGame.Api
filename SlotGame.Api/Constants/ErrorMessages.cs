@@ -10,6 +10,7 @@ public static class ErrorMessages
     public const string SymbolsPerReelRequired = "Symbols per reel are required.";
     public const string ExactlyEightReelsRequired = "Exactly 8 reels are required.";
     public const string ReelMustContainSymbols = "Reel at index {CollectionIndex} must contain at least one symbol.";
+    public const string SymbolValueOutOfRange = "Symbol values must be between 0 and 255 inclusive.";
 
     public const string GameIdMustBeGreaterThanZero = "GameId must be greater than 0.";
     public const string BetAmountMustBeGreaterThanZero = "BetAmount must be greater than 0.";
