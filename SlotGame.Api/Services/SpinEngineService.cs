@@ -24,6 +24,7 @@ public class SpinEngineService(AppDbContext dbContext, IRandomProvider randomPro
     public async Task<SpinResponse?> ExecuteSpinAsync(SpinRequest request, CancellationToken cancellationToken = default)
     {
         var game = await _dbContext.Games
+            .AsNoTracking()
             .Include(x => x.ReelStrips)
             .ThenInclude(x => x.Symbols)
             .FirstOrDefaultAsync(x => x.Id == request.GameId, cancellationToken);
@@ -54,14 +55,14 @@ public class SpinEngineService(AppDbContext dbContext, IRandomProvider randomPro
         var states = new List<SpinStateResponse>();
         var totalWin = 0m;
 
-        var currentMatrix = CloneMatrix(initialMatrixResult.Matrix);
+        var currentMatrix = initialMatrixResult.Matrix;
         var currentTopIndexes = (int[])initialMatrixResult.TopIndexes.Clone();
 
         // state 0 = initial matrix
         states.Add(new SpinStateResponse
         {
             CascadeNumber = 0,
-            Matrix = CloneMatrix(currentMatrix),
+            Matrix = currentMatrix,
             CascadeWin = 0m
         });
 
@@ -79,12 +80,12 @@ public class SpinEngineService(AppDbContext dbContext, IRandomProvider randomPro
             }
 
             totalWin += stepResult.CascadeWin;
-            currentMatrix = CloneMatrix(stepResult.Matrix);
+            currentMatrix = stepResult.Matrix;
 
             states.Add(new SpinStateResponse
             {
                 CascadeNumber = cascadeNumber,
-                Matrix = CloneMatrix(stepResult.Matrix),
+                Matrix = stepResult.Matrix,
                 CascadeWin = stepResult.CascadeWin
             });
         }
@@ -214,7 +215,6 @@ public class SpinEngineService(AppDbContext dbContext, IRandomProvider randomPro
         {
             return new CascadeStepResult
             {
-                Matrix = CloneMatrix(currentMatrix),
                 CascadeWin = 0m,
                 HasWin = false
             };
@@ -408,19 +408,6 @@ public class SpinEngineService(AppDbContext dbContext, IRandomProvider randomPro
 
             topIndexes[column] = Mod(currentTopIndex - emptyCount, reelLength);
         }
-    }
-
-    private static int[][] CloneMatrix(int[][] matrix)
-    {
-        var clone = new int[matrix.Length][];
-
-        for (int row = 0; row < matrix.Length; row++)
-        {
-            clone[row] = new int[matrix[row].Length];
-            Array.Copy(matrix[row], clone[row], matrix[row].Length);
-        }
-
-        return clone;
     }
 
     private static int Mod(int value, int modulo)
